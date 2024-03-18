@@ -1,15 +1,15 @@
 import base64
-from datetime import datetime, timedelta
-from dotenv import load_dotenv
 import json
 import os
 import sys
+from datetime import datetime, timedelta
+
 import requests
+from dotenv import load_dotenv
+
 import amqp_pica
 
-
 load_dotenv()
-
 
 base_url = "https://api.amp.cisco.com/v1"
 
@@ -103,9 +103,18 @@ def create_event_stream(stream_name):
 def get_event_stream(stream_name):
     response = secure_endpoint_get(f'{base_url}/event_streams')
     if response:
-        for s in streams['data']:
+        for s in response['data']:
             if s['name'] == stream_name:
                 return s
+
+
+def list_event_stream():
+    response = secure_endpoint_get(f'{base_url}/event_streams')
+    if response:
+        print('Current Event Streams:')
+        print(json.dumps(response['data'], indent=4, sort_keys=True))
+    else:
+        print('No Event Streams')
 
 
 def delete_event_stream(stream_name):
@@ -115,6 +124,8 @@ def delete_event_stream(stream_name):
 
 
 if __name__ == '__main__':
+    if sys.argv[1].lower() == 'list':
+        list_event_stream()
     if len(sys.argv) != 3:
         if sys.argv[1].lower() == 'serve':
             amqp_pica.consume_events(
