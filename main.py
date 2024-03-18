@@ -120,7 +120,7 @@ def list_event_stream():
 def delete_event_stream(stream_name):
     stream = get_event_stream(stream_name)
     if stream:
-        return secure_endpoint_delete('{base_url}/event_streams{stream["id"]}')
+        return secure_endpoint_delete(f'{base_url}/event_streams{stream["id"]}')
 
 
 if __name__ == '__main__':
