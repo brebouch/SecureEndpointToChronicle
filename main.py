@@ -38,18 +38,21 @@ def secure_endpoint_post(url, data):
     resp = requests.post(url, headers=get_secure_endpoint_headers(), data=json.dumps(data))
     if 199 < resp.status_code < 299:
         return resp.json()
+    print(f'Error with api request, status code: {resp.status_code}\nError Message: {resp.text}')
 
 
 def secure_endpoint_patch(url, data):
     resp = requests.patch(url, headers=get_secure_endpoint_headers(), data=json.dumps(data))
     if 199 < resp.status_code < 299:
         return resp.json()
+    print(f'Error with api request, status code: {resp.status_code}\nError Message: {resp.text}')
 
 
 def secure_endpoint_put(url, data):
     resp = requests.put(url, headers=get_secure_endpoint_headers(), data=json.dumps(data))
     if 199 < resp.status_code < 299:
         return resp.json()
+    print(f'Error with api request, status code: {resp.status_code}\nError Message: {resp.text}')
 
 
 def secure_endpoint_delete(url):
