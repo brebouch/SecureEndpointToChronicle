@@ -56,7 +56,7 @@ def secure_endpoint_put(url, data):
 
 
 def secure_endpoint_delete(url):
-    resp = requests.get(url, headers=get_secure_endpoint_headers())
+    resp = requests.delete(url, headers=get_secure_endpoint_headers())
     return resp.status_code
 
 
