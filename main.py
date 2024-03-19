@@ -98,7 +98,7 @@ def create_event_stream(stream_name):
         print(f'AMQP_USERNAME="{stream["data"]["amqp_credentials"]["user_name"]}"')
         print(f'AMQP_PASSWORD="{stream["data"]["amqp_credentials"]["password"]}"')
         print(f'AMQP_PORT="{stream["data"]["amqp_credentials"]["port"]}"')
-        print(f'AMQP_STREAM_NAME="{stream["queue_name"]}"')
+        print(f'AMQP_STREAM_NAME="{stream["data"]["amqp_credentials"]["queue_name"]}"')
 
 
 def get_event_stream(stream_name):
@@ -121,7 +121,7 @@ def list_event_stream():
 def delete_event_stream(stream_name):
     stream = get_event_stream(stream_name)
     if stream:
-        return secure_endpoint_delete(f'{base_url}/event_streams{stream["id"]}')
+        return secure_endpoint_delete(f'{base_url}/event_streams/{stream["id"]}')
 
 
 if __name__ == '__main__':
