@@ -88,15 +88,16 @@ def create_event_stream(stream_name):
     payload = {
         "name": stream_name}
     stream = secure_endpoint_post(f'{base_url}/event_streams', data=payload)
-    if stream_name:
+    if stream:
         with open('secure_endpoint_amqp.json', 'w') as stream_writer:
             stream_writer.write(json.dumps(json.dumps(stream)))
         print(f'Created Secure Endpoint Event Stream: {stream_name}\n')
+        print(f'Event Stream ID: {stream["data"]["id"]}\n')
         print(f'update the .env file with the following:')
-        print(f'AMQP_HOST="{stream["host"]}"')
-        print(f'AMQP_USERNAME="{stream["user_name"]}"')
-        print(f'AMQP_PASSWORD="{stream["password"]}"')
-        print(f'AMQP_PORT="{stream["port"]}"')
+        print(f'AMQP_HOST="{stream["data"]["amqp_credentials"]["host"]}"')
+        print(f'AMQP_USERNAME="{stream["data"]["amqp_credentials"]["user_name"]}"')
+        print(f'AMQP_PASSWORD="{stream["data"]["amqp_credentials"]["password"]}"')
+        print(f'AMQP_PORT="{stream["data"]["amqp_credentials"]["port"]}"')
         print(f'AMQP_STREAM_NAME="{stream["queue_name"]}"')
 
 
