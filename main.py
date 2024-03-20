@@ -129,13 +129,17 @@ if __name__ == '__main__':
         list_event_stream()
     if len(sys.argv) != 3:
         if sys.argv[1].lower() == 'serve':
-            amqp_pica.consume_events(
-                os.environ.get('AMQP_HOST'),
-                os.environ.get('AMQP_USERNAME'),
-                os.environ.get('AMQP_PASSWORD'),
-                os.environ.get('AMQP_PORT'),
-                os.environ.get('AMQP_STREAM_NAME'),
-            )
+            while True:
+                try:
+                    amqp_pica.consume_events(
+                        os.environ.get('AMQP_HOST'),
+                        os.environ.get('AMQP_USERNAME'),
+                        os.environ.get('AMQP_PASSWORD'),
+                        os.environ.get('AMQP_PORT'),
+                        os.environ.get('AMQP_STREAM_NAME'),
+                    )
+                except Exception as e:
+                    print(f'Caught exception: {e}\nRestarting Consumer')
         print('Invalid inputs provided')
         print('A action and event stream name must be provided as command line argument example '
               '"python3 main.py create test_stream"')
