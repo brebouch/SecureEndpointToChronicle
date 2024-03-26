@@ -39,6 +39,11 @@ Please be aware this project is a proof of concept and is not expected to be use
    * AMQP Stream Name
 3. Start the Event Listener by running `python3 main.py serve`
 
+An optional parameter following the serve command to define a polling interval in seconds. To use it, you would want to execute the script with the following: `python3 main.py serve -–polling_interval 60`
+
+The AMQP session to listens for 30 seconds at a time before establishing a new connection. The polling interval adds the delay in-between the old session closing and new session generating. At startup, it would then establish the connection, listen for 30 seconds, close the connection, and then wait another 60 before opening a new one. If omitted, it will still listen for the 30 seconds but then immediately re-establish the AMQP connection.
+
+
 ## Testing
 
 1. Once the Event Listener is running, from a Secure Endpoint protected computer or the Secure Endpoint console, initiate a scan for a device
