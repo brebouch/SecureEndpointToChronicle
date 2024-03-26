@@ -3,6 +3,7 @@ import json
 import os
 import sys
 from datetime import datetime, timedelta
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -129,6 +130,14 @@ if __name__ == '__main__':
         list_event_stream()
     if len(sys.argv) != 3:
         if sys.argv[1].lower() == 'serve':
+            polling_interval = 0
+            if len(sys.argv) == 4:
+                if sys.argv[2] == '--polling_interval':
+                    try:
+                        polling_interval = int(sys.argv[3])
+                    except ValueError:
+                        print('Polling interval must be an integer, using the default of 0')
+
             while True:
                 try:
                     amqp_pica.consume_events(
@@ -140,6 +149,7 @@ if __name__ == '__main__':
                     )
                 except Exception as e:
                     print(f'Caught exception: {e}\nRestarting Consumer')
+                time.sleep(polling_interval)
         print('Invalid inputs provided')
         print('A action and event stream name must be provided as command line argument example '
               '"python3 main.py create test_stream"')

@@ -9,14 +9,11 @@ This module provides functions for setting up an AMQP connection to Cisco Secure
 and the callback function to be executed when an event arrives.
 """
 
-
-import sys
-import pika
-import boto3
-import datetime
-import ssl
 import json
-from base64 import b64decode
+import ssl
+
+import pika
+
 import chronicle
 
 
@@ -30,9 +27,9 @@ def consume_events(host, user_name, password, port, queue_name):
     context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
     amqp_ssl = pika.SSLOptions(context)
 
-
     params = pika.URLParameters(amqp_url)
     params.ssl_options = amqp_ssl
+    params.heartbeat = 30
 
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
