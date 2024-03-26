@@ -22,14 +22,13 @@ def callback(channel, method, properties, body):
     chronicle.post_event_data([event])
 
 
-def consume_events(host, user_name, password, port, queue_name):
+def consume_events(host, user_name, password, port, queue_name, polling_interval):
     amqp_url = f"amqps://{user_name}:{password}@{host}:{port}"
     context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
     amqp_ssl = pika.SSLOptions(context)
 
     params = pika.URLParameters(amqp_url)
     params.ssl_options = amqp_ssl
-    params.heartbeat = 30
 
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
@@ -39,5 +38,9 @@ def consume_events(host, user_name, password, port, queue_name):
         callback,
         auto_ack=False
     )
-
-    channel.start_consuming()
+    if polling_interval == 0:
+        channel.start_consuming()
+    else:
+        while True:
+            connection.process_data_events(time_limit=0)
+            connection.sleep(polling_interval)

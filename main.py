@@ -146,10 +146,10 @@ if __name__ == '__main__':
                         os.environ.get('AMQP_PASSWORD'),
                         os.environ.get('AMQP_PORT'),
                         os.environ.get('AMQP_STREAM_NAME'),
+                        polling_interval
                     )
                 except Exception as e:
                     print(f'Caught exception: {e}\nRestarting Consumer')
-                time.sleep(polling_interval)
         print('Invalid inputs provided')
         print('A action and event stream name must be provided as command line argument example '
               '"python3 main.py create test_stream"')
